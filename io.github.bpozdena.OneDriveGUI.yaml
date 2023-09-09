@@ -1,0 +1,93 @@
+app-id: io.github.bpozdena.OneDriveGUI
+runtime: org.kde.Platform
+runtime-version: '6.5'
+sdk: org.kde.Sdk
+#  Sdk extensions to build onedrive client
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.llvm14
+  - org.freedesktop.Sdk.Extension.ldc
+command: onedrive-gui.sh
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=wayland
+  - --socket=fallback-x11
+cleanup:
+  - /include
+  - '*.a'
+  - '*.la'
+  - /lib/pkgconfig
+  - /share/man
+  - /share/cmake
+modules:
+
+  # Build kerberos lib from sources
+  - name: kerberos
+    subdir: src
+    config-opts:
+      - --localstatedir=/var/lib
+      - --sbindir=${FLATPAK_DEST}/bin
+      - --disable-rpath
+      - --disable-static
+    sources: 
+      - type: archive
+        url: https://web.mit.edu/kerberos/dist/krb5/1.21/krb5-1.21.2.tar.gz
+        sha256: 9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491
+    cleanup:
+      - /bin
+      - /share/et
+      - /share/examples
+
+  # Build onedrive client from sources
+  - name: onedrive-build
+    buildsystem: simple
+    sources:
+      - type: archive
+        url: https://github.com/abraunegg/onedrive/archive/refs/tags/v2.4.25.tar.gz
+        sha256: e7d782ea7d1973b6b578899a84c4f90ba69302263b4be30d80a363ba8ba27eb3
+    build-commands:
+      - ./configure DC=/usr/lib/sdk/ldc/bin/ldmd2 --prefix=/app --exec-prefix=/app
+      - make clean
+      - make
+      - make install
+    cleanup:
+      - /app/share/doc
+
+  # Install OneDriveGUI from sources
+  - name: onedrivegui-build
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    sources:
+      - type: archive
+        url: https://github.com/bpozdena/OneDriveGUI/archive/refs/tags/v1.0.3.tar.gz
+        sha256: 30511dd2b9c3c548e125564c08e2aaf50f0cfe348abded5733ea04dfa8eb93cf
+    build-commands:
+      # TODO: check requirements compatibilty with Flatpak runtime
+      # - pip3 install --verbose --requirement requirements.txt --prefix=${FLATPAK_DEST} --no-build-isolation
+      - pip3 install --verbose pyside6 requests --prefix=${FLATPAK_DEST} --no-build-isolation
+      - mkdir -p /app/lib/onedrive-gui
+      - cp --recursive src/* --target-directory /app/lib/onedrive-gui
+
+  # Install freedesktop files (see https://www.freedesktop.org/)
+  - name: onedrivegui-desktop
+    buildsystem: simple
+    sources:
+      - type: file
+        path: io.github.bpozdena.OneDriveGUI.appdata.xml
+      - type: file
+        path: io.github.bpozdena.OneDriveGUI.desktop
+      - type: file
+        path: OneDriveGUI.64x64.png
+      - type: file
+        path: OneDriveGUI.128x128.png
+      - type: file
+        path: onedrive-gui.sh
+    build-commands:
+      # Install desktop files and icons
+      - install -Dm 644 io.github.bpozdena.OneDriveGUI.appdata.xml -t /app/share/appdata
+      - install -Dm 644 io.github.bpozdena.OneDriveGUI.desktop /app/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm 644 OneDriveGUI.64x64.png /app/share/icons/hicolor/64x64/apps/${FLATPAK_ID}.png
+      - install -Dm 644 OneDriveGUI.128x128.png /app/share/icons/hicolor/128x128/apps/${FLATPAK_ID}.png
+      - install -Dm 755 onedrive-gui.sh -t /app/bin

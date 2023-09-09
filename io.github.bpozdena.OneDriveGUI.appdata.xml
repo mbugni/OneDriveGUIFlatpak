@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.bpozdena.OneDriveGUI</id>
+  <launchable type="desktop-id">io.github.bpozdena.OneDriveGUI.desktop</launchable>
+  <name>OneDriveGUI</name>
+  <summary>A simple GUI for Linux OneDrive Client</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <developer_name>bpozdena</developer_name>
+  <url type="homepage">https://github.com/bpozdena/OneDriveGUI</url>
+  <url type="bugtracker">https://github.com/bpozdena/OneDriveGUI/issues</url>
+  <url type="help">https://github.com/bpozdena/OneDriveGUI#readme</url>
+  <description>
+    <p>
+      A simple GUI for Linux OneDrive Client, with multi-account support.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://user-images.githubusercontent.com/24818591/187522951-bcfb05c6-8f8c-46ff-a213-80dce8f0d87a.png</image>
+    </screenshot>
+  </screenshots>
+  <update_contact>someone_AT_somewhere.org</update_contact>
+  <content_rating type="oars-1.1">
+  </content_rating>
+  <releases>
+    <release version="v1.0.3" date="2023-08-07">
+      <url>https://github.com/bpozdena/OneDriveGUI/releases/tag/v1.0.3</url>
+    </release>
+  </releases>
+  <provides>
+    <binary>OneDriveGUI</binary>
+  </provides>
+</component>
