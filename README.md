@@ -1,5 +1,5 @@
 <div>
-<img align="left" style="margin: 0px 15px 0px 0px;" src="OneDriveGUI.64x64.png" alt="OneDriveGUI Icon" />
+<img align="left" width="64" height="64" style="margin: 0px 15px 0px 0px;" src="OneDriveGUI.128x128.png" alt="OneDriveGUI Icon" />
 
 # OneDriveGUI on Flatpak
 &nbsp;
