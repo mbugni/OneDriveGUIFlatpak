@@ -7,6 +7,10 @@
 
 This project contains files to build [OneDriveGUI](https://github.com/bpozdena/OneDriveGUI) as a Flatpak app.
 
+### Disclaimer
+
+This project is a prototype for [helping the author](https://github.com/bpozdena/OneDriveGUI/issues/22) to create a Flatpak app.
+
 ## How to build the app
 
 ### 1 - Prepare the environment
@@ -36,7 +40,7 @@ See [flatpak documentation](https://docs.flatpak.org/) for more info.
 
 The first build can take 5 minutes, it depends on your machine performances. It install the app, making it available for your user in the system.
 
-*NOTE:* if you want to install the app system wide, remove the `--user` option and the use `sudo` command.
+*NOTE:* if you want to install the app system wide, remove the `--user` option and prepend `sudo` in the above commands.
 
 ### 3 - Run the app
 You can run the OneDriveGUI launching it from your favorite desktop, or manually by using the `flatpak` command:
